@@ -11,6 +11,14 @@ def index():
     return "this is base auth route"
 @authBp.route('/register', methods=('GET', 'POST'))
 def register():
+    """
+    The `register` function in the Python code snippet handles user registration by validating input
+    data, checking for errors, and inserting user information into a database if no errors occur.
+    :return: The function `register()` is returning the rendered template 'auth/register.html' if the
+    request method is not 'POST'. If the request method is 'POST', it will either redirect to the login
+    page if the registration is successful, or it will flash an error message and stay on the
+    registration page.
+    """
 
     if request.method == 'POST':
         name = request.form['name']
@@ -53,6 +61,13 @@ def register():
 
 @authBp.route('/login', methods=('GET', 'POST'))
 def login():
+    """
+    The `login` function in the provided Python code handles user authentication by checking
+    credentials, querying the database, and setting a session token upon successful login.
+    :return: a response object that redirects the user to the 'movies.list' route if the login is
+    successful. If there are any errors during the login process, it will flash the error message and
+    render the 'auth/login.html' template for the user to try logging in again.
+    """
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
@@ -117,6 +132,13 @@ def login():
 
 @authBp.route('/logout')
 def logout():
+    """
+    The `logout` function logs the user out by redirecting to the login page, clearing the
+    authentication token cookie, and deleting the user session.
+    :return: The `logout()` function is returning a response object that redirects the user to the login
+    page, clears the 'auth_token' cookie, removes the 'user' key from the session, and then returns the
+    response object.
+    """
     response = make_response(redirect(url_for('auth.login')))
     response.set_cookie('auth_token', '', expires=0)
     del session['user']
@@ -124,6 +146,12 @@ def logout():
 
 @authBp.before_app_request
 def check_auth():
+    """
+    The function `check_auth` checks the authentication token and redirects the user based on the
+    current route and authentication status.
+    :return: The `check_auth()` function returns `None` if none of the conditions for redirecting are
+    met.
+    """
     current_route = request.endpoint
     auth_token = request.cookies.get('auth_token')
     print(auth_token)
