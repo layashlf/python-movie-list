@@ -1,0 +1,100 @@
+{% extends 'base.html' %} {% block title %} {{session['user']['user_name'].capitalize()}}'s Playlist {% endblock title %}
+
+{% block body %}
+
+<style>
+    .movie_container {
+        height: auto;
+        overflow: auto;
+        width: 100%;
+
+    }
+
+    .big-div {
+        width: 20%;
+        height: 200px;
+        position: relative;
+        float: left;
+        border: 2px solid grey;
+        margin: 12px;
+        padding: 16px;
+    }
+
+    .child-div {
+        width: 30%;
+        height: 50px;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+
+    }
+
+    .icon-favorite {
+
+        cursor: pointer;
+        text-decoration: none;
+    }
+
+    .heading {
+        padding: 20px;
+    }
+
+    .heading h1 {
+        padding: 20px;
+
+    }
+</style>
+{% with messages = get_flashed_messages() %}
+
+{% if messages %}
+
+{% for message in messages %}
+{% if message['success'] %}
+<div class="alert alert-success" role="alert">
+
+    <span class="d-block">{{ message['message'] }}</span>
+
+</div>
+{% endif %}
+{% if not message['success'] %}
+<div class="alert alert-danger" role="alert">
+
+    <span class="d-block">{{ message['message'] }}</span>
+
+</div>
+{% endif %}
+{% endfor %}
+{% endif %} {% endwith %}
+<div class="heading card">
+
+    <h1 class="card">{{session['user']['user_name'].capitalize()}}'s Playlist</h1>
+
+
+
+
+
+    <div class="row">
+        {% for movie in data %}
+        <div class="col-sm- col-md-3 mb-20">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="center-block text-center mt-20">
+                        <img src="{{url_for('static',filename='images/poster.jpg')}}" alt="image" class="w-50">
+                    </div>
+                    <div>
+
+                        <h5 class="card-title">{{ movie['title'] }}</h5>
+                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                        <div class="w-100 center-block text-right">
+                            <a href="{{url_for('movies.remove',playlist_id=movie['p_id'])}}"
+                                class="btn btn-danger">Remove</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% endfor %}
+    </div>
+
+    {% endblock body %}
